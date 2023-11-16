@@ -259,6 +259,60 @@ class Results(SimpleClass):
                 annotator.kpts(k, self.orig_shape, radius=kpt_radius, kpt_line=kpt_line)
 
         return annotator.result()
+    
+    def cls_plot(
+        self,
+        conf=True,
+        line_width=None,
+        font_size=None,
+        font='Arial.ttf',
+        pil=False,
+        img=None,
+        im_gpu=None,
+        kpt_radius=5,
+        kpt_line=True,
+        labels=True,
+        boxes=True,
+        masks=True,
+        probs=True,
+        label_list=[],
+    ):
+        if img is None and isinstance(self.orig_img, torch.Tensor):
+            img = (self.orig_img[0].detach().permute(1, 2, 0).contiguous() * 255).to(torch.uint8).cpu().numpy()
+
+        names = self.names
+        pred_boxes, show_boxes = self.boxes, boxes
+        pred_masks, show_masks = self.masks, masks
+        pred_probs, show_probs = self.probs, probs
+        annotator = Annotator(
+            deepcopy(self.orig_img if img is None else img),
+            line_width,
+            font_size,
+            font,
+            pil or (pred_probs is not None and show_probs),  # Classify tasks default to pil=True
+            example=names)
+
+        if len(label_list) == 0:
+        # Plot Detect results
+            if pred_boxes and show_boxes:
+                for d in reversed(pred_boxes): 
+                    c, conf, id = int(d.cls), float(d.conf) if conf else None, None if d.id is None else int(d.id.item())
+                    name = ('' if id is None else f'id:{id} ') + names[c]
+                    label = (f'{name} {conf:.2f}' if conf else name) if labels else None
+                    annotator.box_label(d.xyxy.squeeze(), label, color=colors(c, True))
+        else:
+            for i, d in enumerate(pred_boxes):
+                c = int(d.cls)
+                if label_list[i]!='person': annotator.box_label(d.xyxy.squeeze(), label_list[i], color=colors(c, True))
+
+            # Plot Pose results
+            if self.keypoints is not None:
+                for i, k in enumerate((self.keypoints.data)):
+                    if label_list[i]!='person':
+                        annotator.kpts(k, self.orig_shape, radius=kpt_radius, kpt_line=kpt_line)
+
+
+        return annotator.result()
 
     def verbose(self):
         """Return log string for each task."""
