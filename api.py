@@ -19,11 +19,9 @@ def get_dis_hm():
     return response  
 
 
-@app.route('/api/pose_hm', methods=['POST'])
+@app.route('/api/simple_tét', methods=['POST'])
 def get_pose_hm():
-    img = distribution_heatmap()
-    response = Response(img.tobytes(), content_type='image/jpeg')
-    return response   
+    return 'send successful'  
 
 if __name__ == '__main__':
     app.run(debug=True, port = 5173)
