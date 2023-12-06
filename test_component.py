@@ -2,10 +2,8 @@ import cv2
 from ultralytics import YOLO
 import numpy as np
 
-model = YOLO('yolov8m-pose.pt')
-cls_model = YOLO('yolostandpose.pt')
-
-vid_path = 'ultralytics/assets/videos/41_2_crop.mp4'
+model = YOLO('yolov8m.pt')
+vid = 'ultralytics/assets/videos/32_1_crop.mp4'
 
 cap = cv2.VideoCapture(vid_path)
 

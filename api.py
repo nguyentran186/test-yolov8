@@ -4,16 +4,22 @@ from ultralytics import YOLO
 import numpy as np
 from skimage.transform import resize
 from util.dis_hm import get_row_col, draw_grid, distribution_heatmap
-
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
+
 @app.route('/api/dis_hm', methods=['GET'])
 def get_dis_hm():
-    return Response(distribution_heatmap(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    img = distribution_heatmap()
+    response = Response(img.tobytes(), content_type='image/jpeg')
+    return response  
 
 @app.route('/api/pose_hm', methods=['GET'])
 def get_pose_hm():
-    return Response(distribution_heatmap(), mimetype='multipart/x-mixed-replace; boundary=frame')    
+    img = distribution_heatmap()
+    response = Response(img.tobytes(), content_type='image/jpeg')
+    return response   
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port = 5173)
