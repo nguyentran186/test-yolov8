@@ -9,13 +9,13 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/api/dis_hm', methods=['GET'])
+@app.route('/api/dis_hm', methods=['POST'])
 def get_dis_hm():
     img = distribution_heatmap()
     response = Response(img.tobytes(), content_type='image/jpeg')
     return response  
 
-@app.route('/api/pose_hm', methods=['GET'])
+@app.route('/api/pose_hm', methods=['POST'])
 def get_pose_hm():
     img = distribution_heatmap()
     response = Response(img.tobytes(), content_type='image/jpeg')
