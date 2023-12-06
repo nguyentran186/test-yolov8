@@ -19,7 +19,7 @@ def get_dis_hm():
     return response  
 
 
-@app.route('/api/simple_tét', methods=['POST'])
+@app.route('/api/simple_test', methods=['POST'])
 def get_pose_hm():
     return 'send successful'  
 
