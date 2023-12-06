@@ -5,7 +5,7 @@ import numpy as np
 model = YOLO('yolov8m.pt')
 vid = 'ultralytics/assets/videos/32_1_crop.mp4'
 
-cap = cv2.VideoCapture(vid_path)
+cap = cv2.VideoCapture(vid)
 
 
 while cap.isOpened():

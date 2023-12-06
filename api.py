@@ -11,9 +11,13 @@ CORS(app)
 
 @app.route('/api/dis_hm', methods=['POST'])
 def get_dis_hm():
-    img = distribution_heatmap()
+    vid = request.files['file']
+    vid_path = 'temp.mp4'
+    vid.save(vid_path)
+    img = distribution_heatmap(vid_path)
     response = Response(img.tobytes(), content_type='image/jpeg')
     return response  
+
 
 @app.route('/api/pose_hm', methods=['POST'])
 def get_pose_hm():

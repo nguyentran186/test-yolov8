@@ -32,11 +32,8 @@ def draw_grid(image):
 
     return image
 
-def distribution_heatmap():
+def distribution_heatmap(vid):
     model = YOLO('yolov8m.pt')
-    vid = 'ultralytics/assets/videos/41_2_crop.mp4'
-    # vid = request.files['file'].read()
-
     cap = cv2.VideoCapture(vid)
 
     first_im = cap.read()[1]
