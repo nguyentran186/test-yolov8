@@ -11,6 +11,7 @@ CORS(app)
 
 @app.route('/api/dis_hm', methods=['POST'])
 def get_dis_hm():
+    print(request.files)
     vid = request.files['file']
     vid_path = 'temp.mp4'
     vid.save(vid_path)
